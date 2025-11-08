@@ -21,6 +21,9 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Pull
+        run: git pull origin main
+
       - name: Compile
         run: python .github/workflows/main.py
 
@@ -31,7 +34,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git pull origin main
           git add .
           git commit -m "Automated PDF compilation update"
           git push origin main
