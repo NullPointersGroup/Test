@@ -50,36 +50,19 @@ jobs:
     permissions: {} # Non usiamo GITHUB_TOKEN default
 
     steps:
-      # 1. Genera il token della GitHub App (con bypass)
-      - name: Genera Installation Token
-        id: app_token
-        uses: actions/github-script@v7
+      # 1. GENERA TOKEN CON AZIONE UFFICIALE
+      - name: Generate GitHub App Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
         with:
-          script: |
-            const jwt = require('jsonwebtoken');
-            const privateKey = process.env.APP_PRIVATE_KEY;
-            const appId = process.env.APP_ID;
-            const installationId = process.env.INSTALLATION_ID;
-
-            const now = Math.floor(Date.now() / 1000);
-            const payload = { iat: now, exp: now + 600, iss: appId };
-            const jwtToken = jwt.sign(payload, privateKey, { algorithm: 'RS256' });
-
-            const response = await github.request('POST /app/installations/{installation_id}/access_tokens', {
-              installation_id: installationId,
-              headers: { authorization: `Bearer ${jwtToken}` }
-            });
-            return response.data.token;
-        env:
-          APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
-          APP_ID: ${{ secrets.APP_ID }}
-          INSTALLATION_ID: ${{ secrets.INSTALLATION_ID }}
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
       # 2. Checkout con token dell'app
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ steps.app_token.outputs.result }}
+          token: ${{ steps.app-token.outputs.token }}
           ref: main
 
       # 3. Setup Python
@@ -88,17 +71,20 @@ jobs:
         with:
           python-version: "3.11"
 
-      # 4. Installa TeX Live (contenitore leggero)
-      - name: Install TeX Live
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y texlive-full
+      # 4. Installa TeX Live
+      # - name: Install TeX Live
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y texlive-full
 
-      # 5. Esegui il tuo script Python (che compila LaTeX)
+      - name: Pull
+        run: git pull origin main
+
+      # 5. Compila LaTeX
       - name: Compile LaTeX
         run: python .github/workflows/main.py
 
-      # 6. Commit e push PDFs (con bypass!)
+      # 6. Commit e push PDFs (BYPASS!)
       - name: Commit and Push PDFs
         run: |
           git config --global user.name "github-actions[bot]"
@@ -106,5 +92,5 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
           git add .
-          git commit -m "Auto: PDF compilati e aggiornati" || echo "Nessun cambiamento da committare"
+          git commit -m "Auto: PDF compilati e aggiornati" || echo "Nessun cambiamento"
           git push origin main
