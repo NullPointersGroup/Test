@@ -2,11 +2,14 @@ name: Compile LaTeX and create output
 on:
   push:
     branches: [main]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     container: ghcr.io/xu-cheng/texlive-full:latest
     permissions: {}
+    if: "!contains(github.event.head_commit.message, '[skip ci]')" # ← CRITICO
+
     steps:
       - name: Generate GitHub App Token
         uses: actions/create-github-app-token@v1
@@ -30,6 +33,14 @@ jobs:
           git config --global user.name "GitHub App"
           git config --global user.email "noreply@github.com"
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
           git add .
-          git commit -m "Auto: PDF compilati" || exit 0
+
+          # Solo se ci sono cambiamenti
+          if git diff --staged --quiet; then
+            echo "Nessun PDF modificato → esco"
+            exit 0
+          fi
+
+          git commit -m "Auto: PDF compilati [skip ci]"
           git push origin main
