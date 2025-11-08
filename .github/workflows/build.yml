@@ -1,43 +1,4 @@
-# name: Compile Latex and create output
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#     # container: ghcr.io/xu-cheng/texlive-full:latest
-#     permissions:
-#       contents: write
-
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
-
-#       - name: Set up Python
-#         uses: actions/setup-python@v4
-#         with:
-#           python-version: "3.x"
-
-#       - name: Pull
-#         run: git pull origin main
-
-#       - name: Compile
-#         run: python .github/workflows/main.py
-
-#       - name: Mark repo as safe
-#         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
-
-#       - name: Commit and push PDFs
-#         run: |
-#           git config --global user.name "github-actions[bot]"
-#           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-#           git add .
-#           git commit -m "Automated PDF compilation update"
-#           git push origin main
-name: Compile LaTeX and Push PDFs
+name: Compile Latex and create output
 
 on:
   push:
@@ -47,10 +8,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions: {} # Non usiamo GITHUB_TOKEN default
+    # container: ghcr.io/xu-cheng/texlive-full:latest
+    permissions: {}
 
     steps:
-      # 1. GENERA TOKEN CON AZIONE UFFICIALE
       - name: Generate GitHub App Token
         uses: actions/create-github-app-token@v1
         id: app-token
@@ -58,39 +19,76 @@ jobs:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
-      # 2. Checkout con token dell'app
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          token: ${{ steps.app-token.outputs.token }}
-          ref: main
 
-      # 3. Setup Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.x"
 
-      # 4. Installa TeX Live
-      # - name: Install TeX Live
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y texlive-full
-
-      - name: Pull
-        run: git pull origin main
-
-      # 5. Compila LaTeX
-      - name: Compile LaTeX
+      - name: Compile
         run: python .github/workflows/main.py
 
-      # 6. Commit e push PDFs (BYPASS!)
-      - name: Commit and Push PDFs
+      - name: Mark repo as safe
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Commit and push PDFs
         run: |
           git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Auto: PDF compilati e aggiornati" || echo "Nessun cambiamento"
+          git commit -m "Automated PDF compilation update"
           git push origin main
+
+# name: Compile LaTeX and Push PDFs
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     permissions: {} # Non usiamo GITHUB_TOKEN default
+
+#     steps:
+#       # 1. GENERA TOKEN CON AZIONE UFFICIALE
+#       - name: Generate GitHub App Token
+#         uses: actions/create-github-app-token@v1
+#         id: app-token
+#         with:
+#           app-id: ${{ secrets.APP_ID }}
+#           private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+#       # 2. Checkout con token dell'app
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+#         with:
+#           token: ${{ steps.app-token.outputs.token }}
+#           ref: main
+
+#       # 3. Setup Python
+#       - name: Set up Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: "3.11"
+
+#       - name: Pull
+#         run: git pull origin main
+
+#       # 5. Compila LaTeX
+#       - name: Compile LaTeX
+#         run: python .github/workflows/main.py
+
+#       # 6. Commit e push PDFs (BYPASS!)
+#       - name: Commit and Push PDFs
+#         run: |
+#           git config --global user.name "github-actions[bot]"
+#           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#           git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+#           git add .
+#           git commit -m "Auto: PDF compilati e aggiornati" || echo "Nessun cambiamento"
+#           git push origin main
