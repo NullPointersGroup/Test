@@ -28,8 +28,8 @@ def maybe_beartype(func):
 
 # Configuration
 INDEX_HTML_PATH = Path("Documentazione/index.html")
-SRC_DIR = Path("/Documentazione/src")
-OUTPUT_DIR = Path("/Documentazione/output")
+SRC_DIR = Path("Documentazione/src")
+OUTPUT_DIR = Path("Documentazione/output/")
 SECTION_ORDER = ["RTB", "PB", "Candidatura", "Diario Di Bordo"]
 MAX_DEPTH = 2
 
@@ -288,5 +288,8 @@ if __name__ == "__main__":
 
     # print(f"File scritto in: {file_path}")
     # Compila i .tex e aggiorna index.html
+    print(INDEX_HTML_PATH.parent.parent)
+    print(SRC_DIR.parent.parent)
+    print(OUTPUT_DIR.parent.parent)
     compile_tex_to_pdf()
     update_index_html()
