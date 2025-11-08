@@ -20,21 +20,20 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
           ref: main
-
-      - name: Set up Python
-        run: echo "Python già nel container"
+          persist-credentials: true
 
       - name: Compile
         run: python .github/workflows/main.py
 
-      - name: Commit and push PDFs
+      - name:
+          Commit and push PDFs
+          # git remote set-url origin https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/NullPointersGroup/Test.git
         run: |
           git config --global user.name "GitHub App"
           git config --global user.email "noreply@github.com"
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git add .
           git commit -m "Auto: PDF compilati" || exit 0
-          git remote set-url origin https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/NullPointersGroup/Test.git
           git push origin main
 
 # name: Compile LaTeX and Push PDFs
