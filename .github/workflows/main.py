@@ -27,9 +27,9 @@ def maybe_beartype(func):
 
 
 # Configuration
-INDEX_HTML_PATH = Path("index.html")
-SRC_DIR = Path("src")
-OUTPUT_DIR = Path("output")
+INDEX_HTML_PATH = Path("Documentazione/index.html")
+SRC_DIR = Path("/Documentazione/src")
+OUTPUT_DIR = Path("/Documentazione/output")
 SECTION_ORDER = ["RTB", "PB", "Candidatura", "Diario Di Bordo"]
 MAX_DEPTH = 2
 
