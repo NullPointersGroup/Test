@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import os
+import random
 
 # import re
 # import shutil
@@ -255,7 +256,10 @@ if __name__ == "__main__":
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
     with open(file_path, "w", encoding="utf-8") as f:
-        f.write("Questo è semplicemente un test")
+        f.write(
+            "Questo è semplicemente un test e questo è un numero random: "
+            + str(random.randint(1, 1000000))
+        )
 
     print(f"File scritto in: {file_path}")
 # Compila i .tex e aggiorna index.html
