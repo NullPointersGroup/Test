@@ -11,6 +11,7 @@ jobs:
     # container: ghcr.io/xu-cheng/texlive-full:latest
     permissions:
       contents: write
+      administration: write
 
     steps:
       - name: Checkout
