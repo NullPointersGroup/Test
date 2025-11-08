@@ -255,6 +255,8 @@ if __name__ == "__main__":
     # Crea la cartella se non esiste
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
+    if os.path.exists(file_path):
+        os.remove(file_path)
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(
             "Questo è semplicemente un test e questo è un numero random: "
