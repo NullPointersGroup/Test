@@ -30,7 +30,7 @@ jobs:
       - name: Install Lua
         run: |
           apk update
-          apk add lua5.4 lua5.4-dev lua-filesysteml lua5.4 liblua5.4-dev lua-filesystem
+          apk add lua5.4 lua5.4-dev lua5.4-filesystem
 
       - name: Compile LaTeX
         # run: python .github/workflows/main.py
