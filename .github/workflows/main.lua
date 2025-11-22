@@ -250,4 +250,4 @@ end
 
 compile_tex_to_pdf()
 update_html()
-print("index.html updated correctly")
+print("index.html updated correctly!")
