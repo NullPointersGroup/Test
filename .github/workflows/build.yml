@@ -28,7 +28,7 @@ jobs:
           persist-credentials: true
 
       - name: Install Lua
-        run: sudo apt install lua5.4 liblua5.4-dev lua-filesystem
+        run: apt install lua5.4 liblua5.4-dev lua-filesystem
 
       - name: Compile LaTeX
         # run: python .github/workflows/main.py

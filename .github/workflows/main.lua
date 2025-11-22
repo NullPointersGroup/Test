@@ -1,8 +1,8 @@
 local lfs = require("lfs")
 
-OUTPUT_DIR = "output"
-SRC_DIR = "src"
-INDEX_HTML_PATH = "index.html"
+OUTPUT_DIR = "Documentazione/output"
+SRC_DIR = "Documentazione/src"
+INDEX_HTML_PATH = "Documentazione/index.html"
 SECTION_ORDER = { "PB", "RTB", "Candidatura", "Diario Di Bordo" }
 MAX_DEPTH = 3 -- lua comincia a contare da 1...e non aggiungo altro
 
