@@ -34,7 +34,7 @@ jobs:
 
       - name: Compile LaTeX
         # run: python .github/workflows/main.py
-        run: lua .github/workflows/main.lua
+        run: lua5.4 .github/workflows/main.lua
 
       - name: Commit and Push PDFs
         run: |
