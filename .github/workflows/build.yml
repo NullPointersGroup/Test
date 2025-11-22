@@ -27,8 +27,12 @@ jobs:
           ref: main
           persist-credentials: true
 
+      - name: Install Lua
+        run: sudo apt install lua5.4 liblua5.4-dev lua-filesystem
+
       - name: Compile LaTeX
-        run: python .github/workflows/main.py
+        # run: python .github/workflows/main.py
+        run: lua .github/workflows/main.lua
 
       - name: Commit and Push PDFs
         run: |
