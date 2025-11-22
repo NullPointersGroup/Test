@@ -127,7 +127,7 @@ local function compile_tex_to_pdf()
 	for dir, files in pairs(scan_directory(SRC_DIR, { "tex" })) do
 		if not string.match(dir, "content") then
 			for _, file in ipairs(files) do
-				local cmd = 'cd "' .. dir .. '" && ' .. latexcmd .. '"' .. file .. '"'
+				local cmd = 'cd "' .. dir .. '" && ' .. latexcmd .. '"' .. file .. '" > /dev/null 2>&l'
 				local ok, reason, code = os.execute(cmd)
 				-- esce da github-action se il comando ha avuto errori strani
 				if not ok or code ~= 0 then
