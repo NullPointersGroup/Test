@@ -13,3 +13,9 @@ def test_subtract() -> None:
    with pytest.raises(BeartypeCallHintParamViolation):
       add("a", 5)
    assert add (2,4) != 5
+
+def test_subtract_normal() -> None:
+   assert subtract(2,3)==-1
+   with pytest.raises(BeartypeCallHintParamViolation):
+      add("a", 5)
+   assert add (2,4) != 5
