@@ -33,6 +33,7 @@ jobs:
 
   frontend-tests:
     needs: changes
+    if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -40,11 +41,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - run: |
-         if [[ "${{ needs.changes.outputs.frontend }}" != "true" ]]; then
-            echo "No frontend changes, skipping"
-            exit 0
-         fi
+    #   - run: |
+    #      if [[ "${{ needs.changes.outputs.frontend }}" != "true" ]]; then
+    #         echo "No frontend changes, skipping"
+    #         exit 0
+    #      fi
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -53,6 +54,7 @@ jobs:
 
   backend-tests:
     needs: changes
+    if: needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -60,8 +62,35 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          if [[ "${{ needs.changes.outputs.frontend }}" != "true" ]]; then
-            echo "No frontend changes, skipping"
-            exit 0
+    #   - run: |
+    #       if [[ "${{ needs.changes.outputs.backend }}" != "true" ]]; then
+    #         echo "No frontend changes, skipping"
+    #         exit 0
+    #       fi
+  check-tests-passed:
+    needs: [frontend-tests, backend-tests]
+    if: always() # Viene eseguito anche se i test precedenti sono stati saltati
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify test results
+        run: |
+          # Verifica che nessuno dei test necessari sia fallito
+          stringa_errore=""
+          # In Bash la concatenazione si fa accostando le variabili, senza il +
+          if [[ "${{ needs.frontend-tests.result }}" == "failure" ]]; then
+            stringa_errore="${stringa_errore} [Frontend fallito]"
           fi
+          
+          if [[ "${{ needs.backend-tests.result }}" == "failure" ]]; then
+            stringa_errore="${stringa_errore} [Backend fallito]"
+          fi
+
+          # Gli spazi dentro le parentesi [[ ]] sono OBBLIGATORI
+          if [[ -z "$stringa_errore" ]]; then
+            echo "Tutti i test rilevanti sono passati o sono stati saltati correttamente."
+            exit 0
+          else
+            echo "ERRORE CI: $stringa_errore"
+            exit 1
+          fi
+
