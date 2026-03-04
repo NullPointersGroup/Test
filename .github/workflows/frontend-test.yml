@@ -14,7 +14,7 @@ on:
       - 'frontend/tests/**'
 
 jobs:
-  backend-job:
+  frontend-job:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -32,4 +32,4 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm run vitest
+        run: npm run test
