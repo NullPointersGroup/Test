@@ -5,9 +5,16 @@ on:
     branches:
       - main
       - develop
-
+  pull_request:
+    branches:
+      - develop
+      - main
+    paths:
+      - frontend/src/**
+      - frontend/tests/**
 jobs:
-  CI-frontend-tests:
+  feature-frontend-tests:
+    # needs: changes
     # if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     defaults:
@@ -21,15 +28,3 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: npm run test
-
-  CI-backend-tests:
-    # needs: changes
-    # if: needs.changes.outputs.backend == 'true'
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
-
-    steps:
-      - uses: actions/checkout@v4
-
