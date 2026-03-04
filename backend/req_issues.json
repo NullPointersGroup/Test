@@ -1,0 +1,32 @@
+{
+  "issues": [
+    {
+      "engineId": "req_checker",
+      "ruleId": "RF-OB_01",
+      "severity": "CRITICAL",
+      "type": "BUG",
+      "primaryLocation": {
+        "message": "Requisito RF-OB_01 NON soddisfatto",
+        "filePath": "src/add.py",
+        "textRange": {
+          "startLine": 4,
+          "endLine": 13
+        }
+      }
+    },
+    {
+      "engineId": "req_checker",
+      "ruleId": "RF-OB-2",
+      "severity": "CRITICAL",
+      "type": "BUG",
+      "primaryLocation": {
+        "message": "Requisito RF-OB-2 NON soddisfatto",
+        "filePath": "src/add.py",
+        "textRange": {
+          "startLine": 15,
+          "endLine": 25
+        }
+      }
+    }
+  ]
+}
