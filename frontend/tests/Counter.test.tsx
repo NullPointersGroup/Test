@@ -19,10 +19,10 @@ describe('Counter', () => {
     expect(button.textContent).toBe('count is 3')
 
     fireEvent.click(button)
-    expect(button.textContent).toBe('count is 4')
+    expect(button.textContent).toBe('count is 3')
 
     // deve fallire
     fireEvent.click(button)
-    expect(button.textContent).toBe('count is 6')
+    expect(button.textContent).toBe('count is 5')
   })
 })
