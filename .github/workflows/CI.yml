@@ -29,7 +29,6 @@ jobs:
 
   frontend-tests:
     needs: changes
-    if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -37,15 +36,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - run: |
+         if [[ "${{ needs.changes.outputs.frontend }}" != "true" ]]; then
+            echo "No frontend changes, skipping"
+            exit 0
+         fi
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - run: npm ci
-      - run: npm run vitest
+      - run: npm run test
 
   backend-tests:
     needs: changes
-    if: needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -53,3 +56,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - run: |
+          if [[ "${{ needs.changes.outputs.frontend }}" != "true" ]]; then
+            echo "No frontend changes, skipping"
+            exit 0
+          fi
