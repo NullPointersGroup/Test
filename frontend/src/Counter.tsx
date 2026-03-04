@@ -1,6 +1,14 @@
 import { useState } from 'react'
 
 export default function Counter() {
+  /**
+  @brief Brief description
+  @param Type Description
+  @raise ExceptionType Condition or description
+  @bug  actual problems
+  @return Type Description
+  @req RF-OB_1
+   */
   const [count, setCount] = useState(0)
 
   return (
