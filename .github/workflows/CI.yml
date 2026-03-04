@@ -5,10 +5,35 @@ on:
     branches:
       - main
       - develop
+  pull_request:
+    branches:
+      - develop
+      - main
 
 jobs:
-  CI-frontend-tests:
-    # if: needs.changes.outputs.frontend == 'true'
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.filter.outputs.backend }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'frontend/src/**'
+              - 'frontend/tests/**'
+            backend:
+              - 'backend/src/**'
+              - 'backend/tests/**'
+
+  frontend-tests:
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -22,9 +47,9 @@ jobs:
       - run: npm ci
       - run: npm run test
 
-  CI-backend-tests:
-    # needs: changes
-    # if: needs.changes.outputs.backend == 'true'
+  backend-tests:
+    needs: changes
+    if: needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -32,4 +57,3 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
