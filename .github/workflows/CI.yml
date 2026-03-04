@@ -57,3 +57,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip' # Attiva il caching automatico
+          cache-dependency-path: 'backend/requirements.txt'
+      - name: Installazione dipendenze
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Analisi statica
+        run: mypy src
+
+      - name: Analisi Dinamica (pytest)
+        run: pytest
+      
