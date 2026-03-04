@@ -1,16 +1,10 @@
-import { useState } from 'react'
+import Counter from './Counter'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
       <h1>Vite + React</h1>
-      <div className="card bg-sky-400">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
+      <Counter />
     </>
   )
 }
